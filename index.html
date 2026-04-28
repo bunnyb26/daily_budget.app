@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Journey Budget Tracker</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="brand">
+          <span class="brand-icon">✈️</span>
+          <div>
+            <h1 class="brand-title">Journey Budget Tracker</h1>
+            <p class="brand-subtitle">Track your journey expenses smartly</p>
+          </div>
+        </div>
+        <div class="trip-info" id="tripInfo">
+          <button class="btn btn-outline" id="tripSettingsBtn">
+            ⚙️ Trip Settings
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Trip Settings Modal -->
+    <div class="modal-overlay" id="tripModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>Trip Settings</h2>
+          <button class="modal-close" id="closeTripModal">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="tripName">Trip Name</label>
+            <input
+              type="text"
+              id="tripName"
+              placeholder="e.g. Europe Summer 2025"
+            />
+          </div>
+          <div class="form-group">
+            <label for="tripCurrency">Currency</label>
+            <select id="tripCurrency">
+              <option value="USD">🇺🇸 USD - US Dollar</option>
+              <option value="EUR">🇪🇺 EUR - Euro</option>
+              <option value="GBP">🇬🇧 GBP - British Pound</option>
+              <option value="JPY">🇯🇵 JPY - Japanese Yen</option>
+              <option value="CAD">🇨🇦 CAD - Canadian Dollar</option>
+              <option value="AUD">🇦🇺 AUD - Australian Dollar</option>
+              <option value="CHF">🇨🇭 CHF - Swiss Franc</option>
+              <option value="INR">🇮🇳 INR - Indian Rupee</option>
+              <option value="MXN">🇲🇽 MXN - Mexican Peso</option>
+              <option value="SGD">🇸🇬 SGD - Singapore Dollar</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="dailyBudget">Daily Budget</label>
+            <input
+              type="number"
+              id="dailyBudget"
+              placeholder="e.g. 100"
+              min="0"
+              step="0.01"
+            />
+          </div>
+          <div class="form-group">
+            <label for="tripStartDate">Start Date</label>
+            <input type="date" id="tripStartDate" />
+          </div>
+          <div class="form-group">
+            <label for="tripEndDate">End Date</label>
+            <input type="date" id="tripEndDate" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="cancelTripModal">Cancel</button>
+          <button class="btn btn-primary" id="saveTripSettings">
+            Save Settings
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Summary Cards -->
+      <section class="summary-cards" id="summarySection">
+        <div class="card summary-card">
+          <div class="summary-icon">💰</div>
+          <div class="summary-info">
+            <span class="summary-label">Total Spent</span>
+            <span class="summary-value" id="totalSpent">0.00</span>
+          </div>
+        </div>
+        <div class="card summary-card">
+          <div class="summary-icon">📅</div>
+          <div class="summary-info">
+            <span class="summary-label">Daily Budget</span>
+            <span class="summary-value" id="dailyBudgetDisplay">—</span>
+          </div>
+        </div>
+        <div class="card summary-card">
+          <div class="summary-icon">📆</div>
+          <div class="summary-info">
+            <span class="summary-label">Days Tracked</span>
+            <span class="summary-value" id="daysTracked">0</span>
+          </div>
+        </div>
+        <div class="card summary-card">
+          <div class="summary-icon">📊</div>
+          <div class="summary-info">
+            <span class="summary-label">Avg / Day</span>
+            <span class="summary-value" id="avgPerDay">0.00</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="content-grid">
+        <!-- Left Column -->
+        <aside class="left-col">
+          <!-- Add Expense Form -->
+          <div class="card">
+            <h2 class="card-title">➕ Add Expense</h2>
+            <form id="expenseForm">
+              <div class="form-group">
+                <label for="expAmount">Amount</label>
+                <div class="input-prefix">
+                  <span class="prefix" id="currencyPrefix">$</span>
+                  <input
+                    type="number"
+                    id="expAmount"
+                    placeholder="0.00"
+                    min="0"
+                    step="0.01"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="expCategory">Category</label>
+                <select id="expCategory" required>
+                  <option value="">Select a category</option>
+                  <option value="food">🍔 Food & Drinks</option>
+                  <option value="transport">🚌 Transport</option>
+                  <option value="accommodation">🏨 Accommodation</option>
+                  <option value="activities">🎭 Activities & Tours</option>
+                  <option value="shopping">🛍️ Shopping</option>
+                  <option value="health">💊 Health & Medicine</option>
+                  <option value="communication">📱 Communication</option>
+                  <option value="other">📦 Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="expDescription">Description</label>
+                <input
+                  type="text"
+                  id="expDescription"
+                  placeholder="e.g. Lunch at local restaurant"
+                />
+              </div>
+              <div class="form-group">
+                <label for="expDate">Date</label>
+                <input type="date" id="expDate" required />
+              </div>
+              <button type="submit" class="btn btn-primary btn-full">
+                Add Expense
+              </button>
+            </form>
+          </div>
+
+          <!-- Category Breakdown -->
+          <div class="card" id="categoryCard">
+            <h2 class="card-title">🗂️ By Category</h2>
+            <div id="categoryBreakdown">
+              <p class="empty-state">No expenses yet.</p>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Right Column -->
+        <section class="right-col">
+          <!-- Today's Budget Bar -->
+          <div class="card" id="todayCard">
+            <div class="today-header">
+              <h2 class="card-title" id="todayTitle">📅 Today's Spending</h2>
+              <span class="today-date" id="todayDateLabel"></span>
+            </div>
+            <div class="budget-bar-wrap" id="budgetBarWrap">
+              <div class="budget-bar">
+                <div class="budget-bar-fill" id="budgetBarFill"></div>
+              </div>
+              <div class="budget-bar-labels">
+                <span id="todaySpent">Spent: 0.00</span>
+                <span id="todayRemaining">Remaining: —</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <div class="card filter-card">
+            <div class="filter-row">
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="🔍 Search expenses…"
+                class="filter-input"
+              />
+              <select id="filterCategory" class="filter-select">
+                <option value="">All Categories</option>
+                <option value="food">🍔 Food & Drinks</option>
+                <option value="transport">🚌 Transport</option>
+                <option value="accommodation">🏨 Accommodation</option>
+                <option value="activities">🎭 Activities</option>
+                <option value="shopping">🛍️ Shopping</option>
+                <option value="health">💊 Health</option>
+                <option value="communication">📱 Communication</option>
+                <option value="other">📦 Other</option>
+              </select>
+              <select id="filterSort" class="filter-select">
+                <option value="date-desc">Newest First</option>
+                <option value="date-asc">Oldest First</option>
+                <option value="amount-desc">Highest Amount</option>
+                <option value="amount-asc">Lowest Amount</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Expense List -->
+          <div class="card">
+            <div class="expense-list-header">
+              <h2 class="card-title">🧾 Expenses</h2>
+              <button
+                class="btn btn-danger-outline btn-sm"
+                id="clearAllBtn"
+                title="Clear all expenses"
+              >
+                🗑️ Clear All
+              </button>
+            </div>
+            <div id="expenseList">
+              <p class="empty-state">
+                No expenses recorded yet.<br />Add your first expense above!
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Delete Confirm Modal -->
+    <div class="modal-overlay" id="deleteModal">
+      <div class="modal modal-sm">
+        <div class="modal-header">
+          <h2>Delete Expense</h2>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete this expense?</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="cancelDelete">Cancel</button>
+          <button class="btn btn-danger" id="confirmDelete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast notification -->
+    <div class="toast" id="toast"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
